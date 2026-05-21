@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-powered kidney tumor detection using Hybrid ConvNeXt-ViT deep learning for CT scan analysis.">
+    <title>{% block title %}Kidney Tumor Detection{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background Orbs -->
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="page-wrapper">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="{{ url_for('index') }}">
+                    <i class="fas fa-dna"></i>
+                    Kidney Tumor Detection
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('index') }}"><i class="fas fa-home me-1"></i> Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('about') }}"><i class="fas fa-info-circle me-1"></i> About</a>
+                        </li>
+                        {% if 'username' in session %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('dashboard') }}"><i class="fas fa-chart-pie me-1"></i> Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('upload') }}"><i class="fas fa-cloud-upload-alt me-1"></i> Upload</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-1"></i> Logout</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt me-1"></i> Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-primary btn-sm ms-2 px-3" href="{{ url_for('register') }}" style="color:#0a0e27 !important;">
+                                    <i class="fas fa-user-plus me-1"></i> Register
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Flash Messages -->
+        <div class="container mt-3">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert-glass alert-{{ category }}" role="alert">
+                            <i class="alert-icon fas {% if category == 'success' %}fa-check-circle{% elif category == 'danger' %}fa-exclamation-circle{% elif category == 'info' %}fa-info-circle{% else %}fa-exclamation-triangle{% endif %}"></i>
+                            <span>{{ message }}</span>
+                            <button class="alert-close" onclick="this.parentElement.remove()">&times;</button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <!-- Page Content -->
+        <main class="main-content">
+            <div class="container">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+            <div class="container">
+                <p>
+                    <i class="fas fa-dna me-1" style="color: var(--accent);"></i>
+                    <span class="footer-accent">Kidney Tumor Detection</span> &mdash; Hybrid ConvNeXt-ViT Kidney Tumor Detection
+                    &middot; &copy; {{ 2026 }}
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Auto-dismiss flash messages after 5s
+        document.querySelectorAll('.alert-glass').forEach(el => {
+            setTimeout(() => {
+                el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(-10px)';
+                setTimeout(() => el.remove(), 400);
+            }, 5000);
+        });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

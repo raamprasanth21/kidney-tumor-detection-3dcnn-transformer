@@ -1,0 +1,78 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home — Kidney Tumor Detection | AI-Powered Kidney Tumor Detection{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-badge">
+        <span class="pulse-dot"></span>
+        DL-Powered Diagnostics
+    </div>
+
+    <h1>
+        Detect Kidney Tumors<br>
+        with <span class="gradient-text">Deep Learning</span>
+    </h1>
+
+    <p class="hero-subtitle">
+        Combining Hybrid ConvNeXt-ViT architecture for accurate classification of kidney CT scans into Normal, Cyst, Tumor, and Stone in seconds.
+    </p>
+
+    <div class="hero-actions">
+        <a class="btn btn-primary btn-lg" href="{{ url_for('register') }}">
+            <i class="fas fa-rocket me-2"></i>Get Started
+        </a>
+        <a class="btn btn-outline-secondary btn-lg" href="{{ url_for('about') }}">
+            <i class="fas fa-book-open me-2"></i>Learn More
+        </a>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+        <div class="stat-item">
+            <span class="stat-number">4</span>
+            <span class="stat-label">Classes</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">ViT</span>
+            <span class="stat-label">Transformer</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">&lt;5s</span>
+            <span class="stat-label">Inference</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">CNN</span>
+            <span class="stat-label">ConvNeXt</span>
+        </div>
+    </div>
+</section>
+
+<!-- Feature Cards -->
+<section class="feature-grid mt-5">
+    <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(0, 212, 170, 0.08); color: var(--accent);">
+            <i class="fas fa-cloud-upload-alt"></i>
+        </div>
+        <h5>Upload CT Scans</h5>
+        <p>Securely upload your medical imaging data for instant DL-powered analysis.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(14, 165, 233, 0.08); color: var(--accent-secondary);">
+            <i class="fas fa-brain"></i>
+        </div>
+        <h5>Hybrid DL Analysis</h5>
+        <p>Leveraging ConvNeXt for spatial features and Vision Transformer for global context.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(139, 92, 246, 0.08); color: #8b5cf6;">
+            <i class="fas fa-chart-bar"></i>
+        </div>
+        <h5>Instant Results</h5>
+        <p>Receive classification with confidence percentage: Normal, Cyst, Tumor, or Stone.</p>
+    </div>
+</section>
+{% endblock %}

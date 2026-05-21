@@ -1,0 +1,156 @@
+{% extends 'layout.html' %}
+
+{% block title %}Upload CT Scan — Kidney Tumor Detection{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+
+        <!-- Upload Card -->
+        <div class="glass-card mb-4 animate-in">
+            <div class="card-header">
+                <h3 class="text-center mb-0" style="font-size:1.2rem;">
+                    <i class="fas fa-cloud-upload-alt me-2" style="color: var(--accent);"></i>Upload CT Scan for Analysis
+                </h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data" id="upload-form">
+                    <label for="file-input" class="d-block mb-3" style="cursor:pointer;">
+                        <div class="upload-zone" id="upload-zone">
+                            <div class="upload-icon-wrapper">
+                                <i class="fas fa-file-medical"></i>
+                            </div>
+                            <h5>Drop your CT scan here</h5>
+                            <p>or click to browse &middot; JPG, PNG accepted</p>
+                        </div>
+                    </label>
+                    <input type="file" id="file-input" name="file" accept=".jpg,.jpeg,.png" required style="display:none;">
+
+                    <!-- File Preview -->
+                    <div class="file-preview" id="file-preview">
+                        <img id="preview-img" src="#" alt="Preview">
+                        <div class="file-info">
+                            <div class="file-name" id="file-name"></div>
+                            <div class="file-size" id="file-size"></div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 mt-3" id="submit-btn">
+                        <i class="fas fa-paper-plane me-2"></i>Analyze Scan
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Results Card (shown after prediction) -->
+        {% if predicted_class and confidence_score and image_path %}
+        <div class="glass-card result-card">
+            <div class="card-header">
+                <h3 class="text-center mb-0" style="font-size:1.2rem;">
+                    <i class="fas fa-poll me-2" style="color: var(--accent);"></i>Analysis Results
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="result-image-wrapper">
+                    <img src="{{ image_path }}" alt="Uploaded CT Scan">
+                </div>
+
+                <div class="result-details">
+                    <div class="result-item">
+                        <div class="result-label">Prediction</div>
+                        <div class="result-value">
+                            {% set cls = predicted_class|lower %}
+                            <span class="badge-prediction badge-{{ cls }}" style="font-size:1rem; padding: 0.5rem 1.2rem;">
+                                <i class="fas {% if cls == 'normal' %}fa-check-circle{% elif cls == 'cyst' %}fa-circle{% elif cls == 'tumor' %}fa-exclamation-triangle{% else %}fa-gem{% endif %}"></i>
+                                {{ predicted_class }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Confidence</div>
+                        <div class="result-value" style="color: var(--accent);">
+                            {{ (confidence_score|float * 100)|round(1) }}%
+                        </div>
+                        <div class="confidence-bar-wrapper" style="margin-top:0.75rem;">
+                            <div class="confidence-bar">
+                                <div class="fill" id="confidence-fill" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('upload') }}" class="btn btn-outline-secondary me-2">
+                        <i class="fas fa-redo me-1"></i>New Scan
+                    </a>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+                        <i class="fas fa-chart-pie me-1"></i>Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // File input preview
+    const fileInput = document.getElementById('file-input');
+    const uploadZone = document.getElementById('upload-zone');
+    const filePreview = document.getElementById('file-preview');
+    const previewImg = document.getElementById('preview-img');
+    const fileName = document.getElementById('file-name');
+    const fileSize = document.getElementById('file-size');
+
+    fileInput.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+            const file = this.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                fileName.textContent = file.name;
+                fileSize.textContent = (file.size / 1024).toFixed(1) + ' KB';
+                filePreview.classList.add('active');
+                uploadZone.style.borderColor = 'var(--accent)';
+                uploadZone.style.background = 'rgba(0, 212, 170, 0.04)';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Drag and drop
+    ['dragenter', 'dragover'].forEach(evt => {
+        uploadZone.addEventListener(evt, function(e) {
+            e.preventDefault();
+            this.classList.add('drag-over');
+        });
+    });
+
+    ['dragleave', 'drop'].forEach(evt => {
+        uploadZone.addEventListener(evt, function(e) {
+            e.preventDefault();
+            this.classList.remove('drag-over');
+        });
+    });
+
+    uploadZone.addEventListener('drop', function(e) {
+        const files = e.dataTransfer.files;
+        if (files.length) {
+            fileInput.files = files;
+            fileInput.dispatchEvent(new Event('change'));
+        }
+    });
+
+    // Animate confidence bar on load
+    const confidenceFill = document.getElementById('confidence-fill');
+    if (confidenceFill) {
+        const targetWidth = '{{ (confidence_score|default("0")|float * 100)|round(1) }}%';
+        setTimeout(() => {
+            confidenceFill.style.width = targetWidth;
+        }, 300);
+    }
+</script>
+{% endblock %}

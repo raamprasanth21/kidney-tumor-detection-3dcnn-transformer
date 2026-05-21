@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block title %}Past Analyses — Kidney Tumor Detection{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+        <div class="glass-card animate-in">
+            <div class="card-header">
+                <h3 class="text-center mb-0" style="font-size:1.2rem;">
+                    <i class="fas fa-history me-2" style="color: var(--accent);"></i>Your Past CT Scan Submissions
+                </h3>
+            </div>
+            <div class="card-body">
+                {% if files %}
+                    <ul class="list-group">
+                        {% for file in files %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center animate-in" style="animation-delay: {{ loop.index * 0.05 }}s;">
+                                <div style="display:flex; align-items:center; gap:0.75rem;">
+                                    <i class="fas fa-file-image" style="color: var(--accent-secondary);"></i>
+                                    <span>{{ file }}</span>
+                                </div>
+                                <a href="{{ url_for('uploaded_file', filename=file) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-eye me-1"></i>View
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-folder-open"></i>
+                        <p>No CT scan submissions found yet. Upload a scan to get started!</p>
+                        <a href="{{ url_for('upload') }}" class="btn btn-primary">
+                            <i class="fas fa-cloud-upload-alt me-2"></i>Upload New Scan
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

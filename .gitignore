@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+.venv/
+ENV/
+
+# Large Model Files
+*.pth
+*.h5
+*.weights
+*.pkl
+
+# Dataset and temporary data
+**/dataset/
+**/results*/
+**/instance/
+**/uploads/
+**/static/uploads/
+
+# IDEs
+.vscode/
+.idea/
+.DS_Store
+
+# Local Database
+*.db

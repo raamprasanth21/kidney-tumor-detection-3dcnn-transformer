@@ -1,0 +1,70 @@
+{% extends 'layout.html' %}
+
+{% block title %}About — Kidney Tumor Detection{% endblock %}
+
+{% block content %}
+<!-- About Hero -->
+<section class="about-hero animate-in">
+    <h1>About <span class="gradient-text">Kidney Tumor Detection</span></h1>
+    <p>
+        This project, <strong>Kidney Tumor Detection in CT Scans: Combining 3D CNN and Transformer Networks</strong>  
+        aims to revolutionize early and accurate diagnosis of renal conditions using state of the art deep learning.
+    </p>
+</section>
+
+<!-- Description Card -->
+<div class="glass-card mb-4 animate-in animate-in-delay-1">
+    <div class="card-body" style="padding: 2rem;">
+        <p style="color: var(--text-secondary); font-size: 1rem; line-height: 1.8; margin-bottom: 1rem;">
+            We leverage cutting edge deep learning architectures, specifically <strong style="color: var(--accent);">ConvNeXt</strong> 
+            for robust spatial feature extraction and <strong style="color: var(--accent-secondary);">Vision Transformers (ViT)</strong> 
+            for capturing long-range dependencies and contextual information within CT scans.
+        </p>
+        <p style="color: var(--text-secondary); font-size: 1rem; line-height: 1.8; margin: 0;">
+            Our goal is to provide medical professionals with a powerful, reliable, and efficient tool to assist 
+            in the detection process, ultimately leading to earlier interventions and improved patient outcomes. 
+            The system classifies kidney CT images into four categories: <strong>Normal</strong>, <strong>Cyst</strong>, 
+            <strong>Tumor</strong>, and <strong>Stone</strong>.
+        </p>
+    </div>
+</div>
+
+<!-- Approach Cards -->
+<h4 class="text-center mb-3 animate-in animate-in-delay-2" style="font-weight: 700;">
+    <span class="gradient-text">Our Approach</span>
+</h4>
+
+<div class="approach-grid animate-in animate-in-delay-3">
+    <div class="approach-card">
+        <div class="approach-icon" style="background: rgba(0, 212, 170, 0.12); color: var(--accent);">
+            <i class="fas fa-cube"></i>
+        </div>
+        <h5>ConvNeXt Backbone</h5>
+        <p>Depthwise separable convolutions for efficient spatial feature learning from CT data.</p>
+    </div>
+
+    <div class="approach-card">
+        <div class="approach-icon" style="background: rgba(14, 165, 233, 0.12); color: var(--accent-secondary);">
+            <i class="fas fa-robot"></i>
+        </div>
+        <h5>Vision Transformer</h5>
+        <p>Self-attention mechanism to understand complex global relationships within each scan.</p>
+    </div>
+
+    <div class="approach-card">
+        <div class="approach-icon" style="background: rgba(139, 92, 246, 0.12); color: #8b5cf6;">
+            <i class="fas fa-shield-alt"></i>
+        </div>
+        <h5>Data Security</h5>
+        <p>Ensuring the highest standards of patient data privacy and security at every step.</p>
+    </div>
+
+    <div class="approach-card">
+        <div class="approach-icon" style="background: rgba(236, 72, 153, 0.12); color: #ec4899;">
+            <i class="fas fa-chart-line"></i>
+        </div>
+        <h5>High Accuracy</h5>
+        <p>Continuously improving our hybrid model for superior detection rates across all classes.</p>
+    </div>
+</div>
+{% endblock %}

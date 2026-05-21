@@ -1,0 +1,100 @@
+{% extends 'layout.html' %}
+
+{% block title %}Dashboard — Kidney Tumor Detection{% endblock %}
+
+{% block content %}
+<!-- Welcome Banner -->
+<div class="dashboard-welcome">
+    <div>
+        <h2>Welcome back, <span>{{ session.username }}</span> 👋</h2>
+        <p>Your personalized hub for managing CT scan analyses.</p>
+    </div>
+    <a href="{{ url_for('upload') }}" class="btn btn-primary">
+        <i class="fas fa-cloud-upload-alt me-2"></i>New Scan
+    </a>
+</div>
+
+<!-- Stats Cards -->
+<div class="dashboard-stats">
+    <div class="dash-stat-card animate-in animate-in-delay-1">
+        <div class="stat-icon icon-scans"><i class="fas fa-file-medical"></i></div>
+        <div class="stat-number">{{ analyses|length }}</div>
+        <div class="stat-label">Total Scans</div>
+    </div>
+    <div class="dash-stat-card animate-in animate-in-delay-2">
+        <div class="stat-icon icon-latest"><i class="fas fa-clock"></i></div>
+        <div class="stat-number">
+            {% if analyses %}{{ analyses[0].predicted_class }}{% else %}—{% endif %}
+        </div>
+        <div class="stat-label">Latest Result</div>
+    </div>
+    <div class="dash-stat-card animate-in animate-in-delay-3">
+        <div class="stat-icon icon-upload"><i class="fas fa-upload"></i></div>
+        <div class="stat-number" style="font-size:1.1rem;">
+            {% if analyses %}{{ analyses[0].upload_time.strftime('%b %d') }}{% else %}—{% endif %}
+        </div>
+        <div class="stat-label">Last Upload</div>
+    </div>
+</div>
+
+<!-- Analysis History Table -->
+<div class="table-wrapper animate-in animate-in-delay-4" id="history">
+    <div class="table-header">
+        <h4><i class="fas fa-history me-2" style="color: var(--accent);"></i>Analysis History</h4>
+    </div>
+
+    {% if analyses %}
+    <div class="table-responsive">
+        <table class="table" id="history-table">
+            <thead>
+                <tr>
+                    <th>Preview</th>
+                    <th>Filename</th>
+                    <th>Prediction</th>
+                    <th>Confidence</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for analysis in analyses %}
+                <tr>
+                    <td>
+                        <img src="{{ url_for('static', filename='uploads/' + analysis.filename) }}" 
+                             alt="{{ analysis.filename }}" 
+                             class="img-thumbnail" 
+                             style="max-width: 64px; max-height: 64px; object-fit: cover;"
+                             onerror="this.style.display='none'">
+                    </td>
+                    <td>{{ analysis.filename }}</td>
+                    <td>
+                        {% set cls = analysis.predicted_class|lower %}
+                        <span class="badge-prediction badge-{{ cls }}">
+                            <i class="fas {% if cls == 'normal' %}fa-check-circle{% elif cls == 'cyst' %}fa-circle{% elif cls == 'tumor' %}fa-exclamation-triangle{% else %}fa-gem{% endif %}"></i>
+                            {{ analysis.predicted_class }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="confidence-bar-wrapper">
+                            <div class="confidence-bar">
+                                <div class="fill" style="width: {{ (analysis.confidence_score * 100)|round(1) }}%;"></div>
+                            </div>
+                            <div class="confidence-text">{{ (analysis.confidence_score * 100)|round(1) }}%</div>
+                        </div>
+                    </td>
+                    <td style="white-space: nowrap;">{{ analysis.upload_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-folder-open"></i>
+        <p>No analysis history yet. Upload your first CT scan to get started!</p>
+        <a href="{{ url_for('upload') }}" class="btn btn-primary">
+            <i class="fas fa-cloud-upload-alt me-2"></i>Upload Scan
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
