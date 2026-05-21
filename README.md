@@ -13,9 +13,9 @@ This project provides a robust solution for automated kidney tumor analysis. It 
 ## 🧠 Model Weights
 
 > [!IMPORTANT]
-> Due to the large size (~1.2 GB), the pre-trained model weights are not hosted directly on GitHub.
+> Due to the large size, the pre-trained model weights are not hosted directly on GitHub.
 > 
-> **[Download Model Weights (Placeholder Link)]**
+> **[Download Model Weights (https://drive.google.com/drive/folders/16dVeU0qpnQtAQmAZcz51FBmhgtyDH5Ps?usp=drive_link)]**
 > *Instructions: Download the `.pth` files and place them in the `BACKEND/` and `FRONTEND/` directories.*
 
 ## 🛠️ Technology Stack
